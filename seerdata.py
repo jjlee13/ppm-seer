@@ -295,6 +295,24 @@ def loadPopulationFile(path):
     assert len(populationHeader)== len(population_col_spec)
     return pd.read_fwf(path, colspecs=population_col_spec, header=None, names=populationHeader)
 
+
+def random_subset(datafile, subsetfile, number_of_records=10000):
+    """
+    :datafile: name of data file from the seer dataset to subsample
+    :subsetfile: name of the file to write (folders need to be already created
+    :number_of_records: size of the subsample in records
+    :return:  nothing
+
+    creates an excerpt of datafile, taking random lines not changing the content.
+    """
+    with open(datafile, "rt") as f:
+        lines=f.read().split("\n")
+    np.random.shuffle(lines)
+    with open(subsetfile, "wt") as sub:
+        content = "\n".join(lines[:number_of_records])
+        sub.write(content)
+
+
 path = 'incidence/yr2005.lo_2nd_half/BREAST.TXT'
 incidences = glob('incidence/*/*.TXT')
 populationFiles = glob("populations/*/*/*.txt")
